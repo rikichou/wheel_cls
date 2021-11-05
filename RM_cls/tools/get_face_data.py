@@ -2,8 +2,8 @@ import sys
 import cv2
 import os
 
-ann_file = '/home/ruiming/workspace/pro/facialExpression/data/select/clean_1029/val.txt'
-out_img_root_dir = '/home/ruiming/workspace/pro/facialExpression/data/select/clean_1029/faceonly/test'
+ann_file = '/home/ruiming/workspace/pro/facialExpression/data/select/clean_1029/train.txt'
+out_img_root_dir = '/home/ruiming/workspace/pro/facialExpression/data/select/clean_1029/faceonly/train'
 if not os.path.exists(out_img_root_dir):
     os.makedirs(out_img_root_dir)
 src_img_root_dir = '/home/ruiming/workspace/pro/facialExpression/data/select'
