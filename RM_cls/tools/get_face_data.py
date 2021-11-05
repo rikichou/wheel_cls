@@ -61,7 +61,7 @@ for filename, gt_label, sx, sy, ex, ey in samples:
 
     # read image
     img = cv2.imread(img_path)
-    if img:
+    if not img is None:
         face_img = get_input_face(img, (sx,sy,ex,ey))
 
         # get output path
