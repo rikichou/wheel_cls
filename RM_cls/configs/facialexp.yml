@@ -12,7 +12,7 @@ MODEL:
     NAME: "ClsHead"
     POOL_LAYER: "avgpool"
     CLS_LAYER: "linear"
-    NUM_CLASSES: 2
+    NUM_CLASSES: 4
 
   LOSSES:
     NAME: ("FocalLoss",)
@@ -29,7 +29,7 @@ INPUT:
   SIZE_TEST: [112, 112]
 
   DO_FLIP: True
-  DO_VERTICAL_FLIP: True
+  DO_VERTICAL_FLIP: False
   FLIP_PROB: 0.5
 
   DO_PAD: True
@@ -66,11 +66,11 @@ INPUT:
     PROB: 0.5
 
 DATASETS:
-  ROOT: "/xcli/wheels_cls/wheel_imgs/"
-  NAMES: (("DirReader", "wheel_imgs_1"),)
-  TESTS: (("DirReader", "wheel_imgs_1"),)
+  ROOT: "/home/ruiming/workspace/pro/facialExpression/data/select/clean_1029"
+  NAMES: (("DirReader", "faceonly"),)
+  TESTS: (("DirReader", "faceonly"),)
   COMBINEALL: False
-  CLASSES: ['0000', '0001']
+  CLASSES: ['angry', 'happy', 'neutral', 'sad']
 
 DATALOADER:
   PK_SAMPLER: True
