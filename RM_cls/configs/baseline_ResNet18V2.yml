@@ -1,0 +1,106 @@
+MODEL:
+  META_ARCHITECTURE: "ClassLevelBaseline"
+  FREEZE_LAYERS: ['']
+
+  BACKBONE:
+    NAME: "build_resnetV2_backbone"
+    PRETRAIN: False
+    FEAT_DIM: 64
+    BLOCK_NAME: "BasicBlock"
+    BLOCKS: [2, 2, 2, 2]
+
+  HEADS:
+    NAME: "ClsHead"
+    POOL_LAYER: "avgpool"
+    CLS_LAYER: "linear"
+    NUM_CLASSES: 2
+
+  LOSSES:
+    NAME: ("CrossEntropyLoss",)
+
+    CE:
+      EPSILON: 0.1
+      SCALE: 1.
+
+  PIXEL_MEAN: [127.5, 127.5, 127.5]
+  PIXEL_STD: [1, 1, 1]
+
+INPUT:
+  SIZE_TRAIN: [112, 112]
+  SIZE_TEST: [112, 112]
+
+  DO_FLIP: True
+  FLIP_PROB: 0.5
+
+  DO_PAD: True
+  PADDING: 10
+
+  CJ:
+    ENABLED: True
+
+  DO_AUTOAUG: False
+  AUTOAUG_PROB: 0.5
+
+  DO_AUGMIX: False
+  AUGMIX_PROB: 0.5
+
+  CUTMIX: False
+  MIXUP: False
+  FMIX: False
+  MIX_ALPHA: 0.2
+
+  REA:
+    ENABLED: False
+    PROB: 0.5
+    VALUE: [127.5, 127.5, 127.5]
+
+  RPT:
+    ENABLED: False
+    PROB: 0.5
+
+DATASETS:
+  #ROOT: "/lmliu/lmliu/dataset"
+  #READER: "DirReader"
+  #NAMES: ("luggage",)
+  #TESTS: ("luggage",)
+  #COMBINEALL: False
+  #CLASSES: ['positive', 'negative']
+  ROOT: "/xcli/wheels_cls/wheel_imgs/"
+  NAMES: (("DirReader", "wheel_imgs_1"),)
+  TESTS: (("DirReader", "wheel_imgs_1"),)
+  COMBINEALL: False
+  CLASSES: ['0000', '0001']
+
+DATALOADER:
+  PK_SAMPLER: False
+  NUM_INSTANCE: 128
+  NUM_WORKERS: 16
+
+SOLVER:
+  FP16_ENABLED: False
+  OPT: "Adam"
+  MAX_EPOCH: 60
+  BASE_LR: 0.001
+  BIAS_LR_FACTOR: 2.
+  WEIGHT_DECAY: 0.0005
+  WEIGHT_DECAY_BIAS: 0.0005
+  IMS_PER_BATCH: 256
+
+  SCHED: "MultiStepLR"
+  STEPS: [40, 90]
+  GAMMA: 0.1
+
+  WARMUP_FACTOR: 0.1
+  WARMUP_ITERS: 2000
+
+  CHECKPOINT_PERIOD: 10
+
+TEST:
+  EVAL_PERIOD: 5
+  IMS_PER_BATCH: 256
+
+CUDNN_BENCHMARK: True
+
+OUTPUT_DIR: "/xcli/wheels_cls/output"
+
+

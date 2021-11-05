@@ -1,0 +1,136 @@
+MODEL:
+  META_ARCHITECTURE: "DistillBaseline"
+  FREEZE_LAYERS: ['']
+
+  BACKBONE:
+    NAME: "build_resnetV2_backbone"
+    PRETRAIN: False
+    BLOCK_NAME: "Bottleneck"
+    BLOCKS: [1, 2, 2, 1]
+    PRETRAIN_PATH: ""
+
+  HEADS:
+    NAME: "ClsHead"
+    POOL_LAYER: "avgpool"
+    NECK_FEAT: "before"
+    CLS_LAYER: "linear"
+
+  LOSSES:
+    NAME: ("CrossEntropyLoss",)
+
+    CE:
+      EPSILON: 0.1
+      SCALE: 1.
+
+  PIXEL_MEAN: [127.5, 127.5, 127.5]
+  PIXEL_STD: [1, 1, 1]
+
+  WEIGHTS: "/lmliu/lmliu/logs/rmclas/kd_resnet0_resnet1/model_0001.pth"
+  STUDENT_WEIGHTS: ""
+  TEACHER_WEIGHTS: "/lmliu/lmliu/logs/rmclas/resnet/model_0001.pth"
+
+MODEL_TEACHER:
+  META_ARCHITECTURE: "DistillBaseline"
+
+  BACKBONE:
+    NAME: "build_resnetV2_backbone"
+    BLOCK_NAME: "Bottleneck"
+    BLOCKS: [1, 2, 2, 1]
+
+  HEADS:
+    NAME: "ClsHead"
+    POOL_LAYER: "avgpool"
+    NECK_FEAT: "before"
+    CLS_LAYER: "linear"
+
+# distill parameter
+DISTILL:
+  METHOD: "hint"  # choices=['kd', 'hint', 'attention', 'similarity',
+                  # 'correlation', 'vid', 'crd', 'kdsvd', 'fsp',
+                  # 'rkd', 'pkt', 'abound', 'factor', 'nst']
+  GAMMA: 0.1
+  ALPHA: 0.9
+  BETA: 0
+  # KL distillation
+  KD_T: 4
+  # NCE distillation
+  FEAT_DIM: 128
+  # hint layer
+  HINT_LAYER: 2  # choices=[0, 1, 2, 3, 4]
+  INIT_EPOCHS: 30
+  KL_CHOICE: "jsdiv"  # choices=['jsdiv', 'kl']
+
+INPUT:
+  SIZE_TRAIN: [112, 112]
+  SIZE_TEST: [112, 112]
+
+  DO_FLIP: True
+  FLIP_PROB: 0.5
+
+  DO_PAD: True
+  PADDING: 10
+
+  CJ:
+    ENABLED: False
+
+  DO_AUTOAUG: True
+  AUTOAUG_PROB: 0.5
+
+  DO_AUGMIX: True
+  AUGMIX_PROB: 0.5
+
+  CUTMIX: False
+  MIXUP: False
+  FMIX: False
+  MIX_ALPHA: 0.2
+
+  REA:
+    ENABLED: True
+    PROB: 0.5
+    VALUE: [127.5, 127.5, 127.5]
+
+  RPT:
+    ENABLED: False
+    PROB: 0.5
+
+DATASETS:
+  ROOT: "/lmliu/lmliu/dataset"
+  READER: "DirReader"
+  NAMES: ("luggage",)
+  TESTS: ("luggage",)
+  COMBINEALL: False
+  CLASSES: ['positive', 'negative']
+
+DATALOADER:
+  PK_SAMPLER: True
+  NUM_INSTANCE: 32
+  NUM_WORKERS: 8
+
+SOLVER:
+  FP16_ENABLED: False
+  OPT: "Adam"
+  MAX_EPOCH: 120
+  BASE_LR: 0.00035
+  BIAS_LR_FACTOR: 2.
+  WEIGHT_DECAY: 0.0005
+  WEIGHT_DECAY_BIAS: 0.0005
+  IMS_PER_BATCH: 64
+
+  SCHED: "MultiStepLR"
+  STEPS: [40, 90]
+  GAMMA: 0.1
+
+  WARMUP_FACTOR: 0.1
+  WARMUP_ITERS: 2000
+
+  CHECKPOINT_PERIOD: 10
+
+TEST:
+  EVAL_PERIOD: 1
+  IMS_PER_BATCH: 64
+
+CUDNN_BENCHMARK: True
+
+OUTPUT_DIR: "/lmliu/lmliu/logs/rmclas/kd_resnet0_resnet1"
+
+
