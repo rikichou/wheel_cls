@@ -13,7 +13,7 @@ MODEL:
     POOL_LAYER: "avgpool"
     CLS_LAYER: "linear"
     NUM_CLASSES: 4
-    EMBEDDING_DIM: 64
+    EMBEDDING_DIM: 128
 
   LOSSES:
     NAME: ("FocalLoss",)
