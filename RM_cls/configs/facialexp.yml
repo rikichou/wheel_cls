@@ -5,7 +5,7 @@ MODEL:
   BACKBONE:
     NAME: "build_ResAcNet_backbone"
     PRETRAIN: False
-    FEAT_DIM: 64
+    FEAT_DIM: 128
     DEPLOY: False
 
   HEADS:
