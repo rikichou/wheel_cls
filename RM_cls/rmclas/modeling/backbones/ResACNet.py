@@ -133,14 +133,14 @@ class WheelsMaskBlock(nn.Module):
 class resnet18(nn.Module):
     def __init__(self, deploy=False):
         super(resnet18, self).__init__()
-        self.layer1 = Bottleneck_a(3, 16, 3, [2, 1], 1, 4, deploy=deploy)
-        self.layer2 = Bottleneck_a(16, 32, 3, [2, 1], 1, 8, deploy=deploy)
+        self.layer1 = Bottleneck_a(3, 32, 3, [2, 1], 1, 4, deploy=deploy)
+        self.layer2 = Bottleneck_a(32, 32, 3, [2, 1], 1, 8, deploy=deploy)
         # self.layer3 = Bottleneck_b(32, 32, 3, 1, 1, 8)
         self.layer4 = Bottleneck_a(32, 64, 3, [2, 1], 1, 16, deploy=deploy)
         # self.layer5 = Bottleneck_b(64, 64, 3, 1, 1, 16)
         # self.layer6 = Bottleneck_b(64, 64, 3, 1, 1, 16)
         # self.layer7 = Bottleneck_b(64, 64, 3, 1, 1, 16)
-        self.layer8 = Bottleneck_a(64, 64, 3, [2, 1], 1, 32, deploy=deploy)
+        self.layer8 = Bottleneck_a(64, 128, 3, [2, 1], 1, 32, deploy=deploy)
         # self.fc1 = nn.Linear(64, 2)
         # self.avg_pool = nn.AdaptiveAvgPool2d(1)
 
